@@ -20,7 +20,7 @@ namespace WebMotors.Framework.ThirdAPIs
         #endregion
 
 
-        public WebMotorsAPI(HttpClient client) : base(client) { }
+        public  WebMotorsAPI(HttpClient client) : base(client) { }
 
 
         public async Task<CarMake> GetCarMake()

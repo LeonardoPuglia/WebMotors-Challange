@@ -36,7 +36,7 @@ namespace WebMotors.Challenge.Controllers
         public async Task<IActionResult> GetAnnounceById([FromQuery] Guid uniqueId)
         {
             return await ApiResultAsync<Announce>(async () => {
-                return AnnounceService.GetAnnounceByUniqueId(uniqueId);
+                return await AnnounceService.GetAnnounceByUniqueId(uniqueId);
             });
 
         }
@@ -45,7 +45,7 @@ namespace WebMotors.Challenge.Controllers
         public async Task<IActionResult> ListAnnounceds()
         {
             return await ApiResultAsync<IList<Announce>>(async () => {
-                return AnnounceService.ListAnnounce();
+                return await AnnounceService.ListAnnounce();
             });
 
         }
@@ -53,8 +53,10 @@ namespace WebMotors.Challenge.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAnnounced()
         {
-            return await ApiResultAsync<bool>(async () => {
-                return AnnounceService.PostAnnounce(new Announce());
+            return await ApiResultAsync<Announce>(async () => {
+
+                var result = await AnnounceService.PostAnnounce(new Announce());
+                return result;
             });
 
         }
@@ -63,7 +65,7 @@ namespace WebMotors.Challenge.Controllers
         public async Task<IActionResult> PutAnnounced([FromQuery] Guid uniqueId)
         {
             return await ApiResultAsync<bool>(async () => {
-                return AnnounceService.PutAnnounce(uniqueId);
+                return await AnnounceService.PutAnnounce(uniqueId) == 1;
             });
 
         }
@@ -72,7 +74,7 @@ namespace WebMotors.Challenge.Controllers
         public async Task<IActionResult> DeleteAnnounced([FromQuery] Guid uniqueId)
         {
             return await ApiResultAsync<bool>(async () => {
-                return AnnounceService.DeleteAnnounce(uniqueId);
+                return await AnnounceService.DeleteAnnounce(uniqueId) == 1;
             });
 
         }

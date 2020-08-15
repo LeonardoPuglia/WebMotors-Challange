@@ -14,8 +14,8 @@ namespace WebMotors.Framework.ThirdAPIs
             _client = client; 
         }
 
-        public HttpClient _client { get; set; }
-        public HttpClient Client
+        private HttpClient _client { get; set; }
+        protected HttpClient Client
         {
             get { return _client; }
         }
