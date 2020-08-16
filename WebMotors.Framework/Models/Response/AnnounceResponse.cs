@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebMotors.Challenge.Models.Response
+namespace WebMotors.Framework.Models.Response
 {
     public class AnnounceResponse
     {

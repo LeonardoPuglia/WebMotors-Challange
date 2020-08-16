@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebMotors.Framework.Entities;
 using WebMotors.Framework.Exceptions;
+using WebMotors.Framework.Models.Request;
 using WebMotors.Framework.Repositories;
 using WebMotors.Framework.ThirdAPIs;
 
@@ -54,10 +55,12 @@ namespace WebMotors.Framework.Services
             return entity;
         }
 
-        public async Task<Announce> PostAnnounce(Announce entity)
+        public async Task<Announce> PostAnnounce(AnnounceRequest request)
         {
-            if (entity == null)
+            if (request == null)
                 throw new BadRequestException("");
+
+            var entity = await WebMotorsAPI.GetAnnounceByAPI(request);
 
             return await AnnounceRepository.InsertAnnounceAsync(entity);
         }

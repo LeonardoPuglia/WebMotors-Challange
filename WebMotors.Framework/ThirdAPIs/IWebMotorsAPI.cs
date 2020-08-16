@@ -4,14 +4,19 @@ using System.Text;
 using System.Threading.Tasks;
 using WebMotors.Framework.Entities;
 using WebMotors.Framework.Models;
+using WebMotors.Framework.Models.Request;
 
 namespace WebMotors.Framework.ThirdAPIs
 {
     public interface IWebMotorsAPI
     {
-        Task<CarMake> GetCarMake();
-        Task<CarModel> GetCarModelByMakeId(int MakeId);
-        Task<CarVersion> GetCarVersionByModelId(int modelId);
+        Task<IList<CarMake>> GetCarMakes();
+        Task<IList<CarModel>> GetCarModelsByMakeId(int MakeId);
+        Task<IList<CarVersion>> GetCarVersionByModelId(int modelId);
         Task<IList<Vehicles>> GetVehiclesByPage(int page);
+
+        Task<Announce> GetAnnounceByAPI(AnnounceRequest request);
+
+        Task<IList<Announce>> GetAnnouncesByAPI(AnnounceRequest request);
     }
 }

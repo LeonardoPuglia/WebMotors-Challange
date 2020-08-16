@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Request\" />
+    <ProjectReference Include="..\WebMotors.Framework\WebMotors.Framework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebMotors.Framework\WebMotors.Framework.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

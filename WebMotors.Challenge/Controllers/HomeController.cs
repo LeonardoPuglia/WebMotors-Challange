@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebMotors.Challenge.Controllers.Base;
 using WebMotors.Framework.Entities;
+using WebMotors.Framework.Models.Request;
 using WebMotors.Framework.Services;
 
 namespace WebMotors.Challenge.Controllers
@@ -21,6 +22,7 @@ namespace WebMotors.Challenge.Controllers
         {
             get { return _announceService; }
         }
+     
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -51,11 +53,15 @@ namespace WebMotors.Challenge.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAnnounced()
+        public async Task<IActionResult> PostAnnounced([FromQuery] int makeId , [FromQuery] int modelId, [FromQuery] int page)
         {
             return await ApiResultAsync<Announce>(async () => {
 
-                var result = await AnnounceService.PostAnnounce(new Announce());
+
+                var request = new AnnounceRequest { MakeId = makeId, ModelId = modelId, Page = page };
+           
+                var result = await AnnounceService.PostAnnounce(request);
+
                 return result;
             });
 
