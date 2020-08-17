@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Swashbuckle.AspNetCore.Annotations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using WebMotors.Challenge.Controllers.Base;
+using WebMotors.Challenge.ModelsPages;
 using WebMotors.Framework.Entities;
 using WebMotors.Framework.Models;
 using WebMotors.Framework.Models.Request;
@@ -39,10 +43,18 @@ namespace WebMotors.Challenge.Controllers
            
             var makes = await GetAllMakes();
 
-            var model = new ModelsPages.AnnounceHomeModel
+            var makesList = makes != null ? makes.ToList() : new List<CarMake>();
+
+            var model = new AnnounceHomeModel();
+
+            model.CarMakes.Add(new SelectListItem("Selecione uma marca ... ", ""));
+            makesList.ForEach(x =>
             {
-                CarsMakes = makes
-            };
+                model.CarMakes.Add(new SelectListItem(x.Name, x.Id.ToString()));
+            });
+
+            model.CarModels.Add(new SelectListItem("Selecione um modelo ... ", ""));
+            model.CarVersions.Add(new SelectListItem("Selecione uma versão ... ", ""));
 
             return View(model);
           
@@ -50,6 +62,10 @@ namespace WebMotors.Challenge.Controllers
 
 
         [HttpGet]
+        [ProducesResponseType(typeof(Announce), 200)]
+        [ProducesResponseType(typeof(ErrorModel), 500)]
+        [SwaggerOperation(Summary = "Retorna pelo UniqueId", Description = "Retorna um anúncio cadastrado passando o unique Id")]
+        [Produces("application/json")]
         public async Task<IActionResult> GetAnnounceById([FromQuery] Guid uniqueId)
         {
             return await ApiResultAsync<Announce>(async () => {
@@ -58,17 +74,24 @@ namespace WebMotors.Challenge.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ListAnnounceds()
-        {
-            return await ApiResultAsync<IList<Announce>>(async () => {
-                return await AnnounceService.ListAnnounce();
-            });
+        //[HttpGet]
+        //[ProducesResponseType(typeof(IList<Announce>), 200)]
+        //[ProducesResponseType(typeof(ErrorModel), 500)]
+        //[SwaggerOperation(Summary = "Retorna pelo UniqueId", Description = "Retorna um anúncio cadastrado passando o unique Id")]
+        //public async Task<IActionResult> ListAnnounceds()
+        //{
+        //    return await ApiResultAsync<IList<Announce>>(async () => {
+        //        return await AnnounceService.ListAnnounce();
+        //    });
 
-        }
+        //}
 
         [HttpPost]
-        public async Task<IActionResult> PostAnnounced([FromQuery] int makeId , [FromQuery] int modelId, [FromQuery] int page)
+        [ProducesResponseType(typeof(Announce), 200)]
+        [ProducesResponseType(typeof(ErrorModel), 500)]
+        [SwaggerOperation(Summary = "Criação de Anúncio", Description = "Gerar um anúncio informando a marca e o modelo do carro e a página que contem os veículos a serem anunciados (acionando API da webmotors.")]
+        [Produces("application/json")]
+        public async Task<IActionResult> PostAnnounced( int makeId ,  int modelId,  int page)
         {
             return await ApiResultAsync<Announce>(async () => {
 
@@ -83,6 +106,10 @@ namespace WebMotors.Challenge.Controllers
         }
 
         [HttpPut]
+        [ProducesResponseType(typeof(Announce), 200)]
+        [ProducesResponseType(typeof(ErrorModel), 500)]
+        [SwaggerOperation(Summary = "Atualiza um anúncio UniqueId", Description = "Atualiza um anúncio cadastrado passando o unique Id")]
+        [Produces("application/json")]
         public async Task<IActionResult> PutAnnounced([FromQuery] Guid uniqueId)
         {
             return await ApiResultAsync<bool>(async () => {
@@ -92,6 +119,10 @@ namespace WebMotors.Challenge.Controllers
         }
 
         [HttpDelete]
+        [ProducesResponseType(typeof(Announce), 200)]
+        [ProducesResponseType(typeof(ErrorModel), 500)]
+        [SwaggerOperation(Summary = "Exclui um UniqueId", Description = "Deleta um anúncio cadastrado passando o unique Id")]
+        [Produces("application/json")]
         public async Task<IActionResult> DeleteAnnounced([FromQuery] Guid uniqueId)
         {
             return await ApiResultAsync<bool>(async () => {
@@ -107,7 +138,7 @@ namespace WebMotors.Challenge.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllModels([FromQuery] int makeId)
+        public async Task<IActionResult> GetAllModels( int makeId)
         {
             return await ApiResultAsync<IList<CarModel>>(async () => {
                 return await WebMotorsAPI.GetCarModelsByMakeId(makeId);
@@ -116,7 +147,7 @@ namespace WebMotors.Challenge.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllVersions([FromQuery] int modelId)
+        public async Task<IActionResult> GetAllVersions( int modelId)
         {
             return await ApiResultAsync<IList<CarVersion>>(async () => {
                 return await WebMotorsAPI.GetCarVersionByModelId(modelId);

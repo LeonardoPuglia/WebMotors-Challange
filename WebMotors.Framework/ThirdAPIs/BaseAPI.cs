@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using WebMotors.Framework.Exceptions;
 
 namespace WebMotors.Framework.ThirdAPIs
 {
-    public class BaseAPI
+    public abstract class BaseAPI
     {
         public BaseAPI(HttpClient client)
         {
@@ -20,7 +21,7 @@ namespace WebMotors.Framework.ThirdAPIs
             get { return _client; }
         }
 
-        protected virtual async Task<TModel> ExecuteGetApiAsync<TModel>(string path) where TModel : class
+        protected  async Task<TModel> ExecuteGetApiAsync<TModel>(string path) where TModel : class
         {
             try
             {
@@ -31,7 +32,7 @@ namespace WebMotors.Framework.ThirdAPIs
                 string responseBody = await response.Content.ReadAsStringAsync();
 
                 if (string.IsNullOrWhiteSpace(responseBody))
-                    throw new ArgumentNullException("Reponse conveted in null");
+                    throw new InternalServerErrorException("External WebMotors API - Response retornou nulo.");
 
                 var result = JsonConvert.DeserializeObject<TModel>(responseBody);
 
@@ -40,7 +41,7 @@ namespace WebMotors.Framework.ThirdAPIs
             catch (Exception ex)
             {
 
-                throw;
+                throw new InternalServerErrorException($"Houve um erro ao acessar a API externa: {ex.Message}");
             }
         }
 
@@ -56,7 +57,7 @@ namespace WebMotors.Framework.ThirdAPIs
             catch (Exception ex)
             {
 
-                throw;
+                throw new InternalServerErrorException($"Houve um erro ao acessar a API externa: {ex.Message}");
             }
         }
     }

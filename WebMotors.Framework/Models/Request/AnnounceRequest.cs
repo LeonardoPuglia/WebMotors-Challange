@@ -17,13 +17,13 @@ namespace WebMotors.Framework.Models.Request
         public void Validate()
         {
             if (MakeId >= 0)
-                throw new BadRequestException("");
+                throw new BadRequestException("Marca é obrigatória parar gerar o anúncio");
 
             if (ModelId >= 0)
-                throw new BadRequestException("");
+                throw new BadRequestException("Modelo é obrigatório parar gerar o anúncio");
 
             if (Page >= 0)
-                throw new BadRequestException("");
+                throw new BadRequestException("Número de paginação é obrigatório parar gerar o anúncio");
         }
     }
 }

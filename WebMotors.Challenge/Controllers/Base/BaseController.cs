@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebMotors.Framework.Exceptions;
+using WebMotors.Framework.Models;
 
 namespace WebMotors.Challenge.Controllers.Base
 {
@@ -36,33 +37,10 @@ namespace WebMotors.Challenge.Controllers.Base
 
             catch (InternalServerErrorException ex)
             {
-                return BadRequest(ex.Message);//TO DO
+                return new JsonResult(new ErrorModel($"Houve um erro ao tentar acionar a API : {ex.Message}"));
             }
         }
 
-        //protected virtual Task<IActionResult> ApiResult<T>(Func<Task<T>> fn)
-        //{
-        //    try
-        //    {
-        //        var result =  fn();
-
-        //        return Ok(result);
-        //    }
-        //    catch (BadRequestException ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-
-        //    catch (NotFoundException ex)
-        //    {
-        //        return NotFound(ex.Message);
-        //    }
-
-        //    catch (InternalServerErrorException ex)
-        //    {
-        //        return BadRequest(ex.Message);//TO DO
-        //    }
-        //}
 
 
     }

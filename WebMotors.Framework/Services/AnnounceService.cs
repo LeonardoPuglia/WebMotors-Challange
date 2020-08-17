@@ -14,8 +14,8 @@ namespace WebMotors.Framework.Services
     {
 
         #region Properties
-        public WebMotorsAPI _webMotorsAPI;
-        public WebMotorsAPI WebMotorsAPI { get { return _webMotorsAPI; } }
+        public IWebMotorsAPI _webMotorsAPI;
+        public IWebMotorsAPI WebMotorsAPI { get { return _webMotorsAPI; } }
 
 
         public IAnnounceRepository _announceRepository;
@@ -25,7 +25,7 @@ namespace WebMotors.Framework.Services
 
         #region Ctor
 
-        public AnnounceService(WebMotorsAPI webMotorsAPI , IAnnounceRepository announceRepository)
+        public AnnounceService(IWebMotorsAPI webMotorsAPI , IAnnounceRepository announceRepository)
         {
             _webMotorsAPI = webMotorsAPI;
             _announceRepository = announceRepository;

@@ -8,6 +8,8 @@ using WebMotors.Framework.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Net.Http;
+using WebMotors.Framework.Models;
 
 namespace WebMotors.Challenge
 {
@@ -24,14 +26,22 @@ namespace WebMotors.Challenge
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddWebMotorsFrameworksServices();
+            
+
+
+            var config = Configuration.GetSection("AppConfigurations").Get<AppConfigurations>();
+
+            var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri(config.WebMotorsAPIUrl)
+                //Timeout = new TimeSpan(config.Timeout)
+
+            };
+            //services.AddSingleton(httpClient);
 
             services.AddDbContext<WebMotorsDbContext>(options =>
                 options.UseSqlServer(Configuration["WebMotorsDb:ConnectionString"]));
 
-            //services.AddControllers()
-            //        .AddNewtonsoftJson(options =>
-            //              options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddSwaggerGen(c => {
 
@@ -51,6 +61,8 @@ namespace WebMotors.Challenge
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
+
+            services.AddWebMotorsFrameworksServices(config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +9,20 @@ namespace WebMotors.Challenge.ModelsPages
 {
     public class AnnounceHomeModel
     {
-        public IList<Framework.Models.CarMake> CarsMakes { get; set; }
-        public IList<Framework.Models.CarModel> ModelsMakes { get; set; }
-        public IList<Framework.Models.CarVersion> CarsVersions { get; set; }
-        public IList<Framework.Entities.Announce> Makes { get; set; }
+        public AnnounceHomeModel()
+        {
+            CarMakes = new List<SelectListItem>();
+            CarModels = new List<SelectListItem>();
+            CarVersions = new List<SelectListItem>();
+        }
+        //public IList<Framework.Models.CarMake> CarsMakes { get; set; }
+        //public IList<Framework.Models.CarModel> ModelsMakes { get; set; }
+        //public IList<Framework.Models.CarVersion> CarsVersions { get; set; }
+        //public IList<Framework.Entities.Announce> Makes { get; set; }
+
+        public List<SelectListItem> CarMakes { get; set; }
+        public List<SelectListItem> CarModels { get; set; }
+        public List<SelectListItem> CarVersions { get; set; }
+
     }
 }
