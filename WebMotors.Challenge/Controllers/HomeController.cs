@@ -5,16 +5,19 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebMotors.Challenge.Controllers.Base;
 using WebMotors.Framework.Entities;
+using WebMotors.Framework.Models;
 using WebMotors.Framework.Models.Request;
 using WebMotors.Framework.Services;
+using WebMotors.Framework.ThirdAPIs;
 
 namespace WebMotors.Challenge.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ILogger<HomeController> logger, IAnnounceService announceService) : base(logger)
+        public HomeController(ILogger<HomeController> logger, IAnnounceService announceService , IWebMotorsAPI webMotorsAPI) : base(logger)
         {
             _announceService = announceService;
+            _webMotorsAPI = webMotorsAPI;
         }
 
         public IAnnounceService _announceService;
@@ -22,15 +25,27 @@ namespace WebMotors.Challenge.Controllers
         {
             get { return _announceService; }
         }
-     
+
+        public IWebMotorsAPI _webMotorsAPI;
+        public IWebMotorsAPI WebMotorsAPI
+        {
+            get { return _webMotorsAPI; }
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-           return await ApiResultAsync<bool>(async () =>{
-                return true;
-            });
+           
+            var makes = await GetAllMakes();
 
+            var model = new ModelsPages.AnnounceHomeModel
+            {
+                CarsMakes = makes
+            };
+
+            return View(model);
+          
         }
 
 
@@ -86,6 +101,28 @@ namespace WebMotors.Challenge.Controllers
         }
 
 
+        private async Task<IList<CarMake>> GetAllMakes()
+        {
+             return await WebMotorsAPI.GetCarMakes();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllModels([FromQuery] int makeId)
+        {
+            return await ApiResultAsync<IList<CarModel>>(async () => {
+                return await WebMotorsAPI.GetCarModelsByMakeId(makeId);
+            });
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllVersions([FromQuery] int modelId)
+        {
+            return await ApiResultAsync<IList<CarVersion>>(async () => {
+                return await WebMotorsAPI.GetCarVersionByModelId(modelId);
+            });
+
+        }
 
     }
 }
