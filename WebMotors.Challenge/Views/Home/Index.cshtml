@@ -1,29 +1,84 @@
-﻿@using WebMotors.Challenge.ModelsPages; 
-@model AnnounceHomeModel
+﻿@model IEnumerable<WebMotors.Framework.Entities.Announce>
+
 @{
-    ViewData["Title"] = "Web Motor Anúncios";
+    ViewData["Title"] = "View";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Web Motors Anúncios</h1>
+<h1>View</h1>
 
-    <div>
-
-        @using (Html.BeginForm("PostAnnounced", "Home", FormMethod.Post))
-        {
-
-            <select asp-items="@Model.CarMakes" name="MakeId" class="w-350" asp-page-handler="GetAllModels" asp-route-id="this"></select><br /><br />
-            <select asp-items="@Model.CarModels" name="ModelId" class="w-350" OnChange="GetAllVersions(this.Value)"></select><br /><br />
-            <select asp-items="@Model.CarVersions" name="VersionId" class="w-350"></select><br /><br /><br />
-
-            @Html.LabelFor(x => Model.CarMakes, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-5">
-                @Html.DropDownListFor(x => Model.CarMakes, new SelectList(Model.CarMakes, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "Country" })
-                @Html.ValidationMessageFor(x => x.CarMakes, "Selecione uma marca", new { @class = "text-danger" })
-            </div>
-
-            <button asp-action="PostAnnounced">Cadastrar Anúncio</button>
-        }
-    </div>
-
-</div>
+<p>
+    <a asp-action="Create">Visualizar Anúncios</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Branch)*@
+                Marca
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Model)*@
+                Modelo
+            </th>
+            <th>
+                @*Html.DisplayNameFor(model => model.Version)*@
+                Versão
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Year)*@
+                Ano
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Mileage)*@
+                Quilometragem
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Observation)*@
+                Observações
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.CreateDate)*@
+                Criado Em
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.UpdateDate)*@
+                AtualizadoEm
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Version)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mileage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Observation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreateDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpdateDate)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "PutAnnounced", new { uniqueId = item.UniqueId }) |
+                @Html.ActionLink("Excluir", "DeleteAnnounced", new { uniqueId = item.UniqueId })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

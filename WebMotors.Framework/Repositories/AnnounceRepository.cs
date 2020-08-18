@@ -43,5 +43,10 @@ namespace WebMotors.Framework.Repositories
 
             return await Context.SaveChangesAsync();
         }
+
+        public async Task<IList<Announce>> ListAllAnnounceAsync()
+        {
+            return await Context.Set<Announce>().ToListAsync();
+        }
     }
 }

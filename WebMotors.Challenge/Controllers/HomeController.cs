@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Annotations;
@@ -18,29 +19,55 @@ namespace WebMotors.Challenge.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(ILogger<HomeController> logger, IAnnounceService announceService , IWebMotorsAPI webMotorsAPI) : base(logger)
+        public HomeController(ILogger<HomeController> logger, IAnnounceService announceService , IWebMotorsAPI webMotorsAPI , IMapper mapper) : base(logger)
         {
             _announceService = announceService;
             _webMotorsAPI = webMotorsAPI;
+            _mapper = mapper;
         }
 
-        public IAnnounceService _announceService;
+
+        #region Properties
+        private IAnnounceService _announceService;
         public IAnnounceService AnnounceService
         {
             get { return _announceService; }
         }
 
-        public IWebMotorsAPI _webMotorsAPI;
+        private IWebMotorsAPI _webMotorsAPI;
         public IWebMotorsAPI WebMotorsAPI
         {
             get { return _webMotorsAPI; }
         }
 
 
+        private readonly IMapper _mapper;
+        public  IMapper Mapper
+        {
+            get { return _mapper; }
+        }
+        #endregion
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
            
+
+            var model = new AnnounceHomeModel();
+
+            var list = await  AnnounceService.ListAllAnnounces();
+
+            if (list != null && list.Count > 0)
+                model.Announces = Mapper.Map<List<Announce>, List<AnnounceModel>>(list.ToList());
+            
+            return View(model);
+          
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+
             var makes = await GetAllMakes();
 
             var makesList = makes != null ? makes.ToList() : new List<CarMake>();
@@ -57,7 +84,7 @@ namespace WebMotors.Challenge.Controllers
             model.CarVersions.Add(new SelectListItem("Selecione uma versão ... ", ""));
 
             return View(model);
-          
+
         }
 
 

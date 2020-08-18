@@ -13,6 +13,6 @@ namespace WebMotors.Framework.Services
         Task<Announce> PostAnnounce(AnnounceRequest request);
         Task<int> PutAnnounce(Guid uniqueId);
         Task<int> DeleteAnnounce(Guid uniqueId);
-        Task<IList<Announce>> ListAnnounce();
+        Task<IList<Announce>> ListAllAnnounces();
     }
 }

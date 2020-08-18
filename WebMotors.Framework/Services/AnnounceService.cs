@@ -37,7 +37,7 @@ namespace WebMotors.Framework.Services
         public async Task<int> DeleteAnnounce(Guid uniqueId)
         {
             if (uniqueId == Guid.Empty)
-                throw new BadRequestException("The uniqueId of Announce is required.");
+                throw new BadRequestException("Unique id do anúncio é obrigatório");
 
             return await AnnounceRepository.RemoveAnnounceAsync(uniqueId);
         }
@@ -45,12 +45,12 @@ namespace WebMotors.Framework.Services
         public async Task<Announce> GetAnnounceByUniqueId(Guid uniqueId)
         {
             if (uniqueId == Guid.Empty)
-                throw new BadRequestException("The uniqueId of Announce is required.");
+                throw new BadRequestException("Unique id do anúncio é obrigatório");
 
             var entity = await AnnounceRepository.GetAnnounceAsync(uniqueId);
 
             if (entity == null)
-                throw new NotFoundException("");
+                throw new NotFoundException($"Anúncio inexistente para o UniqueId : {uniqueId}");
 
             return entity;
         }
@@ -58,7 +58,7 @@ namespace WebMotors.Framework.Services
         public async Task<Announce> PostAnnounce(AnnounceRequest request)
         {
             if (request == null)
-                throw new BadRequestException("");
+                throw new BadRequestException("O dados de requisição da criação do anúncio não foram informados.");
 
             var entity = await WebMotorsAPI.GetAnnounceByAPI(request);
 
@@ -68,19 +68,21 @@ namespace WebMotors.Framework.Services
         public async Task<int> PutAnnounce(Guid uniqueId)
         {
             if (uniqueId == Guid.Empty)
-                throw new BadRequestException("The uniqueId of Announce is required.");
+                throw new BadRequestException("Unique id do anúncio é obrigatório");
 
             var entity = await AnnounceRepository.GetAnnounceAsync(uniqueId);
 
             if (entity == null)
-                throw new NotFoundException("");
+                throw new NotFoundException($"Anúncio inexistente para o UniqueId : {uniqueId}");
 
             return await AnnounceRepository.UpdateAnnounceAsync(entity);
         }
 
-        public async Task<IList<Announce>> ListAnnounce()
+        public async Task<IList<Announce>> ListAllAnnounces()
         {
-            throw new NotImplementedException();
+
+            return await AnnounceRepository.ListAllAnnounceAsync();
+
         }
 
         #endregion

@@ -1,0 +1,29 @@
+﻿@using WebMotors.Challenge.ModelsPages; 
+@model AnnounceHomeModel
+@{
+    ViewData["Title"] = "Web Motor Anúncios";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Web Motors Anúncios</h1>
+
+    <div>
+
+        @using (Html.BeginForm("PostAnnounced", "Home", FormMethod.Post))
+        {
+
+            <select asp-items="@Model.CarMakes" name="MakeId" class="w-350" asp-page-handler="GetAllModels" asp-route-id="this"></select><br /><br />
+            <select asp-items="@Model.CarModels" name="ModelId" class="w-350" OnChange="GetAllVersions(this.Value)"></select><br /><br />
+            <select asp-items="@Model.CarVersions" name="VersionId" class="w-350"></select><br /><br /><br />
+
+            @Html.LabelFor(x => Model.CarMakes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-5">
+                @Html.DropDownListFor(x => Model.CarMakes, new SelectList(Model.CarMakes, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "Country" })
+                @Html.ValidationMessageFor(x => x.CarMakes, "Selecione uma marca", new { @class = "text-danger" })
+            </div>
+
+            <button asp-action="PostAnnounced">Cadastrar Anúncio</button>
+        }
+    </div>
+
+</div>

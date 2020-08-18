@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Net.Http;
 using WebMotors.Framework.Models;
+using AutoMapper;
 
 namespace WebMotors.Challenge
 {
@@ -61,6 +62,7 @@ namespace WebMotors.Challenge
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddWebMotorsFrameworksServices(config);
         }
