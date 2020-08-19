@@ -1,4 +1,4 @@
-# WebMotors-Challange
+# WebMotors-Challenge
 
 Bem-vindo ao teste pratico de back-end Webmotors.
 Reserve 3 horas para realização do teste, após aplicação do teste você tem até 24 horas para
