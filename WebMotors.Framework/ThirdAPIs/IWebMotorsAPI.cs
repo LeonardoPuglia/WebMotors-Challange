@@ -13,10 +13,9 @@ namespace WebMotors.Framework.ThirdAPIs
         Task<IList<CarMake>> GetCarMakes();
         Task<IList<CarModel>> GetCarModelsByMakeId(int MakeId);
         Task<IList<CarVersion>> GetCarVersionByModelId(int modelId);
-        Task<IList<Vehicles>> GetVehiclesByPage(int page);
+        Task<IList<Vehicle>> GetVehiclesByPage(int page);
 
         Task<Announce> GetAnnounceByAPI(AnnounceRequest request);
 
-        Task<IList<Announce>> GetAnnouncesByAPI(AnnounceRequest request);
     }
 }

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMotors.Challenge", "WebMotors.Challenge\WebMotors.Challenge.csproj", "{E24ABD39-3E09-410E-B370-5BFA5EE74224}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMotors.Challenge", "WebMotors.Challenge\WebMotors.Challenge.csproj", "{E24ABD39-3E09-410E-B370-5BFA5EE74224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMotors.Framework", "WebMotors.Framework\WebMotors.Framework.csproj", "{AB8B97CE-9D8A-4216-8D1E-C2074E8B001A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebMotors.Framework", "WebMotors.Framework\WebMotors.Framework.csproj", "{AB8B97CE-9D8A-4216-8D1E-C2074E8B001A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -29,6 +29,7 @@ namespace WebMotors.Framework.Repositories
         public async Task<Announce> InsertAnnounceAsync(Announce entity)
         {
             var result  = await Context.Set<Announce>().AddAsync(entity);
+            await Context.SaveChangesAsync();
             return result.Entity;
         }
 

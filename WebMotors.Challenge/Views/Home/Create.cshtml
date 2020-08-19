@@ -1,29 +1,125 @@
-﻿@using WebMotors.Challenge.ModelsPages; 
-@model AnnounceHomeModel
+﻿@model WebMotors.Challenge.ModelsPages.AnnounceHomeModel
+
 @{
-    ViewData["Title"] = "Web Motor Anúncios";
+    ViewData["Title"] = "Create";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Web Motors Anúncios</h1>
 
-    <div>
+<h1>Cadastrar novo Anúncio</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PostAnnounced">
 
-        @using (Html.BeginForm("PostAnnounced", "Home", FormMethod.Post))
-        {
+         
 
-            <select asp-items="@Model.CarMakes" name="MakeId" class="w-350" asp-page-handler="GetAllModels" asp-route-id="this"></select><br /><br />
-            <select asp-items="@Model.CarModels" name="ModelId" class="w-350" OnChange="GetAllVersions(this.Value)"></select><br /><br />
-            <select asp-items="@Model.CarVersions" name="VersionId" class="w-350"></select><br /><br /><br />
-
-            @Html.LabelFor(x => Model.CarMakes, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-5">
-                @Html.DropDownListFor(x => Model.CarMakes, new SelectList(Model.CarMakes, "Value", "Text"), htmlAttributes: new { @class = "form-control", id = "Country" })
-                @Html.ValidationMessageFor(x => x.CarMakes, "Selecione uma marca", new { @class = "text-danger" })
+            <div class="form-group">
+                <label asp-for="Request.MakeId" class="control-label">Marca</label>
+                <select id="makeDropId" asp-for="Request.MakeId" class="dropdown" onchange="GetAllModels(this)" >
+                    <option value="0">Selecione uma marca ...</option>
+                    @foreach (var item in Model.CarMakes)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
             </div>
 
-            <button asp-action="PostAnnounced">Cadastrar Anúncio</button>
-        }
-    </div>
+            <div class="form-group form-row">
+                <label asp-for="Request.ModelId" class="control-label">Modelo</label>
+                <select  id="modelDropId" asp-for="Request.ModelId" class="dropdown" onchange="GetAllVersions(this)">
+                    <option value="0">Selecione um modelo ...</option>
+                    @foreach (var item in Model.CarModels)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            </div>
 
+            <div class="form-group form-row">
+                <label asp-for="Request.Version" class="control-label">Versão</label>
+                <select id="versionDropId"  asp-for="Request.Version" class="dropdown">
+                    <option value="0">Selecione uma versão ...</option>
+                    @foreach (var item in Model.CarModels)
+                    {
+                        <option value="@item.Name">@item.Name</option>
+                    }
+                </select>
+            </div>
+
+
+
+            <div class="form-group form-row">
+                <label asp-for="Request.Observation" class="control-label">Observações</label>
+                <input asp-for="Request.Observation" class="form-control" />
+            </div>
+
+
+            <div class="form-group form-row">
+                <input type="submit" value="Cadastrar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
 </div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+
+    function GetAllModels(selected) {
+        var id = selected.options[selected.selectedIndex].value
+
+        if (id == 0)
+            return
+
+        $.ajax({
+            url: 'GetAllModels?makeId=' + id,
+            type: "Get",
+            success: function (data) {
+
+                $('#modelDropId option[value!="0"]').remove();
+
+
+                $.each(data, function (i, item) {
+                    $('#modelDropId').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }));
+                });
+
+
+            }
+        });
+    }
+
+    function GetAllVersions(selected) {
+        var id = selected.options[selected.selectedIndex].value
+        if (id == 0)
+            return
+
+
+        $.ajax({
+            url: 'GetAllVersions?modelId=' + id,
+            type: "Get",
+            success: function (data) {
+
+                $('#versionDropId option[value!="0"]').remove();
+
+                $.each(data, function (i, item) {
+                    $('#versionDropId').append($('<option>', {
+                        value: item.id,
+                        text: item.name
+                    }));
+                });
+            }
+        });
+    }
+
+
+
+</script>
+}

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebMotors.Framework.Entities.Announce>
+﻿@model List<WebMotors.Challenge.ModelsPages.AnnounceModel>
 
 @{
     ViewData["Title"] = "View";
@@ -7,78 +7,88 @@
 <h1>View</h1>
 
 <p>
-    <a asp-action="Create">Visualizar Anúncios</a>
+    <a asp-action="Create">Cadastrar Novo Anúncio</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Branch)*@
-                Marca
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Model)*@
-                Modelo
-            </th>
-            <th>
-                @*Html.DisplayNameFor(model => model.Version)*@
-                Versão
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Year)*@
-                Ano
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Mileage)*@
-                Quilometragem
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Observation)*@
-                Observações
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.CreateDate)*@
-                Criado Em
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.UpdateDate)*@
-                AtualizadoEm
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Branch)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Model)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Version)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Year)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Mileage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UpdateDate)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "PutAnnounced", new { uniqueId = item.UniqueId }) |
-                @Html.ActionLink("Excluir", "DeleteAnnounced", new { uniqueId = item.UniqueId })
-            </td>
-        </tr>
+
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Branch)*@
+                    Marca
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Model)*@
+                    Modelo
+                </th>
+                <th>
+                    @*Html.DisplayNameFor(model => model.Version)*@
+                    Versão
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Year)*@
+                    Ano
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Mileage)*@
+                    Quilometragem
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.Observation)*@
+                    Observações
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.CreateDate)*@
+                    Criado Em
+                </th>
+                <th>
+                    @*@Html.DisplayNameFor(model => model.UpdateDate)*@
+                    AtualizadoEm
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Branch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Model)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Version)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Year)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mileage)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Observation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UpdateDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "PutAnnounced", new { uniqueId = item.UniqueId }) |
+                        @Html.ActionLink("Excluir", "DeleteAnnounced", new { uniqueId = item.UniqueId })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else
+{
+    <p class="">Nenhum anúncio cadastrado.</p>
+}
+

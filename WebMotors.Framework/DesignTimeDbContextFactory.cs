@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using WebMotors.Framework.Repositories;
 
 namespace WebMotors.Framework
@@ -21,7 +19,7 @@ namespace WebMotors.Framework
 
             var builder = new DbContextOptionsBuilder<WebMotorsDbContext>();
 
-            var connectionString = configuration.GetSection("WebMotorsDb").GetConnectionString("ConnectionString");
+            var connectionString = configuration.GetValue<String>("WebMotorsDb:ConnectionString");
 
             builder.UseSqlServer(connectionString);
 
@@ -29,3 +27,4 @@ namespace WebMotors.Framework
         }
     }
 }
+

@@ -78,12 +78,26 @@ namespace WebMotors.Framework.ThirdAPIs
 
             #region Carros
 
-            var vehicles = await GetVehiclesByPage(request.Page);
+            Vehicle carSelected = null;
+            IList<Vehicle> vehicles = null;
+            var page = 1;
+            var nextPage = false;
 
-            if (vehicles == null || vehicles.Count == 0)
-                throw new NotFoundException("API não retornou informações de veículos");
+            do
+            {
+                vehicles = await GetVehiclesByPage(page);
 
-            var carSelected = vehicles.FirstOrDefault();
+                if(vehicles != null && vehicles.Any())
+                    carSelected = vehicles.FirstOrDefault(x => x.Make.ToLowerInvariant() == makeChoiced.Name.ToLowerInvariant() && x.Model.ToLowerInvariant() == modelChoiced.Name.ToLowerInvariant());
+
+                page++;
+
+                nextPage =  (carSelected == null && vehicles.Count > 0);
+
+            } while (nextPage);
+
+            if (carSelected == null)
+                throw new NotFoundException("Não foi encontrado um veículo pelos parâmetros informados.");
 
             #endregion
 
@@ -94,78 +108,12 @@ namespace WebMotors.Framework.ThirdAPIs
                 Version = versionChoiced.Name,
                 Mileage = !String.IsNullOrWhiteSpace(carSelected.KM) ? int.Parse(carSelected.KM) : 0,
                 Year = !String.IsNullOrWhiteSpace(carSelected.YearFab) ? int.Parse(carSelected.YearFab) : 0,
-                Observation = String.Empty
+                Observation = request.Observation
             };
 
         }
 
-        public async Task<IList<Announce>> GetAnnouncesByAPI(AnnounceRequest request)
-        {
-            request.Validate();
-
-            #region Marcas
-
-            var makes = await GetCarMakes();
-
-            if (makes == null || makes.Count == 0)
-                throw new NotFoundException("API de marcas não retornou resultados");
-
-            var makeChoiced = makes.FirstOrDefault(x => x.Id == request.MakeId);
-
-            #endregion
-
-            #region Modelos
-
-            var models = await GetCarModelsByMakeId(request.MakeId);
-
-            if (models == null || models.Count == 0)
-                throw new NotFoundException($"API não retornou modelos para a marca de Id :  {request.MakeId}");
-
-            var modelChoiced = models.FirstOrDefault(x => x.Id == request.ModelId);
-
-            #endregion
-
-            #region Versões
-
-            var versions = await GetCarVersionByModelId(request.ModelId);
-
-            if (versions == null || versions.Count == 0)
-                throw new NotFoundException($"API não retornou versões para o modelo de Id :  {request.ModelId}");
-
-            var versionChoiced = versions.FirstOrDefault(x => x.ModelId == request.ModelId);
-
-
-            #endregion
-
-            #region Carros
-
-            var vehicles = await GetVehiclesByPage(request.Page);
-
-            if (vehicles == null || vehicles.Count == 0)
-                throw new NotFoundException("API não retornou informações de veículos");
-
-
-            #endregion
-
-            var list = new List<Announce>(vehicles.Count);
-
-            foreach (var car in vehicles)
-            {
-                list.Add(new Announce
-                {
-                    Branch = makeChoiced.Name,
-                    Model = modelChoiced.Name,
-                    Version = versionChoiced.Name,
-                    Mileage = !String.IsNullOrWhiteSpace(car.KM) ? int.Parse(car.KM) : 0,
-                    Year = !String.IsNullOrWhiteSpace(car.YearFab) ? int.Parse(car.YearFab) : 0,
-                    Observation = String.Empty
-
-                });
-            }
-
-            return list;
-
-        }
+        
 
         
         public async Task<IList<CarMake>> GetCarMakes()
@@ -188,9 +136,9 @@ namespace WebMotors.Framework.ThirdAPIs
             return result;
         }
 
-        public async Task<IList<Vehicles>> GetVehiclesByPage(int page)
+        public async Task<IList<Vehicle>> GetVehiclesByPage(int page)
         {
-            var result = await ExecuteGetApiAsync<IList<Vehicles>>($"{VERSION_PATH_URL}?Page={page}");
+            var result = await ExecuteGetApiAsync<IList<Vehicle>>($"{VEHICLES_PATH_URL}?Page={page}");
             return result;
         }
 

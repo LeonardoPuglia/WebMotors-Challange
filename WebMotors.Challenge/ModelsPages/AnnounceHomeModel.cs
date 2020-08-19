@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebMotors.Framework;
 using WebMotors.Framework.Entities;
+using WebMotors.Framework.Models;
+using WebMotors.Framework.Models.Request;
 
 namespace WebMotors.Challenge.ModelsPages
 {
@@ -12,21 +14,21 @@ namespace WebMotors.Challenge.ModelsPages
     {
         public AnnounceHomeModel()
         {
-            CarMakes = new List<SelectListItem>();
-            CarModels = new List<SelectListItem>();
-            CarVersions = new List<SelectListItem>();
+            CarMakes = new List<CarMake> ();
+            CarModels = new List<CarModel>();
+            CarVersions = new List<CarVersion>();
             Announces = new List<AnnounceModel>();
+            Request = new AnnounceRequest();
         }
-        //public IList<Framework.Models.CarMake> CarsMakes { get; set; }
-        //public IList<Framework.Models.CarModel> ModelsMakes { get; set; }
-        //public IList<Framework.Models.CarVersion> CarsVersions { get; set; }
-        //public IList<Framework.Entities.Announce> Makes { get; set; }
 
-        public List<SelectListItem> CarMakes { get; set; }
-        public List<SelectListItem> CarModels { get; set; }
-        public List<SelectListItem> CarVersions { get; set; }
+        public List<CarMake> CarMakes { get; set; }
+        public List<CarModel> CarModels { get; set; }
+        public List<CarVersion> CarVersions { get; set; }
 
         public List<AnnounceModel> Announces { get; set; }
+
+        public AnnounceRequest Request { get; set; }
+
 
     }
 }

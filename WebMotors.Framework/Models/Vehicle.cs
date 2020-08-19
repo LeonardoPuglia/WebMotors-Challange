@@ -4,7 +4,7 @@ using System.Text;
 
 namespace WebMotors.Framework.Models
 {
-    public class Vehicles
+    public class Vehicle
     {
         public int Id { get; set; }
         public string Make { get; set; }
